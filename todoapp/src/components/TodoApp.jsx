@@ -305,26 +305,26 @@ const TodoApp = () => {
       />
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-8 pb-20 sm:pb-8">
         {/* Statistics */}
         {todos.length > 0 && (
-          <Card className="mb-6">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-blue-600">
+          <Card className="mb-4 sm:mb-6">
+            <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-center">
+                <div className="p-2 sm:p-0">
+                  <div className="text-xl sm:text-2xl font-bold text-blue-600">
                     {todos.filter((t) => !t.isCompleted).length}
                   </div>
                   <div className="text-xs text-gray-600">Active</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-green-600">
+                <div className="p-2 sm:p-0">
+                  <div className="text-xl sm:text-2xl font-bold text-green-600">
                     {todos.filter((t) => t.isCompleted).length}
                   </div>
                   <div className="text-xs text-gray-600">Completed</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-red-600">
+                <div className="p-2 sm:p-0">
+                  <div className="text-xl sm:text-2xl font-bold text-red-600">
                     {
                       todos.filter(
                         (t) =>
@@ -334,8 +334,8 @@ const TodoApp = () => {
                   </div>
                   <div className="text-xs text-gray-600">Overdue</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-orange-600">
+                <div className="p-2 sm:p-0">
+                  <div className="text-xl sm:text-2xl font-bold text-orange-600">
                     {
                       todos.filter(
                         (t) =>
@@ -350,10 +350,23 @@ const TodoApp = () => {
           </Card>
         )}
 
+        {/* Desktop Add Todo Button */}
+        {todos.length > 0 && (
+          <div className="hidden sm:block mb-6">
+            <Button
+              onClick={handleOpenAddModal}
+              className="w-full h-12 flex items-center justify-center space-x-2 text-base"
+            >
+              <Plus className="h-5 w-5" />
+              <span>Add New Todo</span>
+            </Button>
+          </div>
+        )}
+
         {/* Search & Filters */}
         {todos.length > 0 && (
-          <Card className="mb-6">
-            <CardContent className="pt-6 space-y-4">
+          <Card className="mb-4 sm:mb-6">
+            <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6 space-y-3 sm:space-y-4">
               {/* Search Bar */}
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -377,16 +390,18 @@ const TodoApp = () => {
               </div>
 
               {/* Filter Buttons */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-2">
                 {/* Status Filters */}
-                <div className="flex items-center space-x-1 ml-2 gap-1">
-                  <Filter className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600 mr-2">Status:</span>
+                <div className="flex flex-wrap items-center gap-1 sm:gap-1 sm:ml-2">
+                  <div className="flex items-center gap-1 w-full sm:w-auto mb-1 sm:mb-0">
+                    <Filter className="h-4 w-4 text-gray-500" />
+                    <span className="text-xs sm:text-sm text-gray-600 mr-1 sm:mr-2">Status:</span>
+                  </div>
                   <Button
                     variant={filterStatus === "all" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFilterStatus("all")}
-                    className="h-7"
+                    className="h-8 text-xs sm:text-sm flex-1 sm:flex-none touch-manipulation"
                   >
                     All ({todos.length})
                   </Button>
@@ -394,7 +409,7 @@ const TodoApp = () => {
                     variant={filterStatus === "active" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFilterStatus("active")}
-                    className="h-7 flex items-center space-x-1"
+                    className="h-8 text-xs sm:text-sm flex items-center space-x-1 flex-1 sm:flex-none touch-manipulation"
                   >
                     <Circle className="h-3 w-3" />
                     <span>
@@ -407,7 +422,7 @@ const TodoApp = () => {
                     }
                     size="sm"
                     onClick={() => setFilterStatus("completed")}
-                    className="h-7 flex items-center space-x-1"
+                    className="h-8 text-xs sm:text-sm flex items-center space-x-1 flex-1 sm:flex-none touch-manipulation"
                   >
                     <CheckCircle className="h-3 w-3" />
                     <span>
@@ -417,16 +432,18 @@ const TodoApp = () => {
                 </div>
 
                 {/* Due Date Filters */}
-                <div className="flex items-center space-x-1 ml-2 gap-1">
-                  <Clock className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600 mr-2">Due:</span>
+                <div className="flex flex-wrap items-center gap-1 sm:gap-1 sm:ml-2">
+                  <div className="flex items-center gap-1 w-full sm:w-auto mb-1 sm:mb-0">
+                    <Clock className="h-4 w-4 text-gray-500" />
+                    <span className="text-xs sm:text-sm text-gray-600 mr-1 sm:mr-2">Due:</span>
+                  </div>
                   <Button
                     variant={filterDueDate === "all" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFilterDueDate("all")}
-                    className="h-7"
+                    className="h-8 text-xs sm:text-sm flex-1 sm:flex-none touch-manipulation"
                   >
-                    All ({todos.length})
+                    All
                   </Button>
                   <Button
                     variant={
@@ -434,10 +451,10 @@ const TodoApp = () => {
                     }
                     size="sm"
                     onClick={() => setFilterDueDate("overdue")}
-                    className="h-7 flex items-center space-x-1 text-red-600 border-red-200 hover:bg-red-50"
+                    className="h-8 text-xs sm:text-sm flex items-center space-x-1 text-red-600 border-red-200 hover:bg-red-50 flex-1 sm:flex-none touch-manipulation"
                   >
                     <AlertCircle className="h-3 w-3" />
-                    <span>
+                    <span className="hidden sm:inline">
                       Overdue (
                       {
                         todos.filter(
@@ -447,21 +464,27 @@ const TodoApp = () => {
                       }
                       )
                     </span>
+                    <span className="sm:hidden">
+                      Overdue
+                    </span>
                   </Button>
                   <Button
                     variant={filterDueDate === "today" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFilterDueDate("today")}
-                    className="h-7 text-orange-600 border-orange-200 hover:bg-orange-50"
+                    className="h-8 text-xs sm:text-sm text-orange-600 border-orange-200 hover:bg-orange-50 flex-1 sm:flex-none touch-manipulation"
                   >
-                    Today (
-                    {
-                      todos.filter(
-                        (t) =>
-                          !t.isCompleted && t.dueDate && isDueToday(t.dueDate)
-                      ).length
-                    }
-                    )
+                    <span className="hidden sm:inline">
+                      Today (
+                      {
+                        todos.filter(
+                          (t) =>
+                            !t.isCompleted && t.dueDate && isDueToday(t.dueDate)
+                        ).length
+                      }
+                      )
+                    </span>
+                    <span className="sm:hidden">Today</span>
                   </Button>
                   <Button
                     variant={
@@ -469,19 +492,22 @@ const TodoApp = () => {
                     }
                     size="sm"
                     onClick={() => setFilterDueDate("upcoming")}
-                    className="h-7"
+                    className="h-8 text-xs sm:text-sm flex-1 sm:flex-none touch-manipulation"
                   >
-                    Upcoming (
-                    {
-                      todos.filter(
-                        (t) =>
-                          !t.isCompleted &&
-                          t.dueDate &&
-                          !isOverdue(t.dueDate) &&
-                          !isDueToday(t.dueDate)
-                      ).length
-                    }
-                    )
+                    <span className="hidden sm:inline">
+                      Upcoming (
+                      {
+                        todos.filter(
+                          (t) =>
+                            !t.isCompleted &&
+                            t.dueDate &&
+                            !isOverdue(t.dueDate) &&
+                            !isDueToday(t.dueDate)
+                        ).length
+                      }
+                      )
+                    </span>
+                    <span className="sm:hidden">Upcoming</span>
                   </Button>
                   <Button
                     variant={
@@ -489,9 +515,10 @@ const TodoApp = () => {
                     }
                     size="sm"
                     onClick={() => setFilterDueDate("no-date")}
-                    className="h-7"
+                    className="h-8 text-xs sm:text-sm flex-1 sm:flex-none touch-manipulation"
                   >
-                    No Date ({todos.filter((t) => !t.dueDate).length})
+                    <span className="hidden sm:inline">No Date ({todos.filter((t) => !t.dueDate).length})</span>
+                    <span className="sm:hidden">No Date</span>
                   </Button>
                 </div>
 
@@ -657,34 +684,37 @@ const TodoApp = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-end space-x-2 ml-8">
+                      <div className="flex items-center justify-end space-x-2 ml-0 sm:ml-8 mt-3 sm:mt-0">
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={handleCancelEdit}
-                          className="text-gray-600 hover:text-gray-800"
+                          className="text-gray-600 hover:text-gray-800 flex-1 sm:flex-none h-10 sm:h-9 touch-manipulation"
                         >
                           <X className="h-4 w-4 mr-1" />
-                          Cancel
+                          <span className="hidden sm:inline">Cancel</span>
                         </Button>
                         <Button
                           size="sm"
                           onClick={() => handleSaveEdit(todo.id)}
                           disabled={!editText.trim()}
-                          className="text-white bg-blue-600 hover:bg-blue-700"
+                          className="text-white bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-none h-10 sm:h-9 touch-manipulation"
                         >
                           <Save className="h-4 w-4 mr-1" />
-                          Save
+                          <span className="hidden sm:inline">Save</span>
                         </Button>
                       </div>
                     </div>
                   ) : (
                     // View Mode
-                    <div className="flex items-center space-x-3">
-                      <Checkbox
-                        checked={todo.isCompleted}
-                        onCheckedChange={() => handleToggleTodo(todo.id)}
-                      />
+                    <div className="flex items-start sm:items-center space-x-2 sm:space-x-3">
+                      <div className="pt-1 sm:pt-0">
+                        <Checkbox
+                          checked={todo.isCompleted}
+                          onCheckedChange={() => handleToggleTodo(todo.id)}
+                          className="touch-manipulation"
+                        />
+                      </div>
 
                       <div
                         className="flex-1 min-w-0 cursor-pointer hover:bg-gray-50 rounded px-2 py-1 transition-colors"
@@ -737,12 +767,12 @@ const TodoApp = () => {
                         )}
                       </div>
 
-                      <div className="flex items-center space-x-1">
+                      <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-1">
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleEditTodo(todo)}
-                          className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                          className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 h-9 w-9 sm:h-8 sm:w-8 p-0 touch-manipulation"
                           title="Edit todo"
                         >
                           <Edit2 className="h-4 w-4" />
@@ -752,7 +782,7 @@ const TodoApp = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleDeleteClick(todo)}
-                          className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                          className="text-red-600 hover:text-red-800 hover:bg-red-50 h-9 w-9 sm:h-8 sm:w-8 p-0 touch-manipulation"
                           title="Delete todo"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -766,13 +796,24 @@ const TodoApp = () => {
           )}
         </div>
 
+        {/* Floating Action Button for Mobile */}
+        <div className="fixed bottom-6 right-6 sm:hidden z-30">
+          <Button
+            onClick={handleOpenAddModal}
+            className="h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-shadow bg-blue-600 hover:bg-blue-700 touch-manipulation"
+            title="Add todo"
+          >
+            <Plus className="h-6 w-6 text-white" />
+          </Button>
+        </div>
+
         {/* Stats */}
         {todos.length > 0 && (
-          <Card className="mt-8">
-            <CardHeader>
-              <CardTitle className="text-lg">Progress</CardTitle>
+          <Card className="mt-6 sm:mt-8 mb-6 sm:mb-0">
+            <CardHeader className="px-4 sm:px-6">
+              <CardTitle className="text-base sm:text-lg">Progress</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 sm:px-6">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600">Total: {totalCount}</span>
                 <span className="text-gray-600">
@@ -856,11 +897,12 @@ const TodoApp = () => {
             </div>
           )}
 
-          <div className="flex justify-end space-x-3 pt-4 border-t">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-3 pt-4 border-t">
             <Button
               variant="outline"
               onClick={handleCancelDelete}
               disabled={isDeleting}
+              className="w-full sm:w-auto h-11 touch-manipulation"
             >
               Cancel
             </Button>
@@ -868,9 +910,9 @@ const TodoApp = () => {
               variant="destructive"
               onClick={handleConfirmDelete}
               disabled={isDeleting}
-              className="flex items-center space-x-2"
+              className="w-full sm:w-auto flex items-center justify-center space-x-2 h-11 touch-manipulation"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-5 w-5" />
               <span>{isDeleting ? "Deleting..." : "Delete Todo"}</span>
             </Button>
           </div>
@@ -884,7 +926,7 @@ const TodoApp = () => {
         title="Add New Todo"
         size="md"
       >
-        <form onSubmit={handleAddTodo} className="space-y-4">
+        <form onSubmit={handleAddTodo} className="space-y-4 px-1">
           <div>
             <label
               htmlFor="todoTitle"
@@ -897,7 +939,7 @@ const TodoApp = () => {
               placeholder="What needs to be done?"
               value={newTodo}
               onChange={(e) => setNewTodo(e.target.value)}
-              className="w-full"
+              className="w-full h-11 text-base"
               disabled={isAddingTodo}
               autoFocus
             />
@@ -915,7 +957,7 @@ const TodoApp = () => {
               placeholder="Additional details (optional)"
               value={newTodoDescription}
               onChange={(e) => setNewTodoDescription(e.target.value)}
-              className="w-full"
+              className="w-full h-11 text-base"
               disabled={isAddingTodo}
             />
           </div>
@@ -933,7 +975,7 @@ const TodoApp = () => {
                 type="date"
                 value={newTodoDueDate}
                 onChange={(e) => setNewTodoDueDate(e.target.value)}
-                className="flex-1"
+                className="flex-1 h-11 text-base"
                 disabled={isAddingTodo}
               />
               {newTodoDueDate && (
@@ -942,29 +984,30 @@ const TodoApp = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => setNewTodoDueDate("")}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 h-11 w-11 p-0 touch-manipulation"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-5 w-5" />
                 </Button>
               )}
             </div>
           </div>
 
-          <div className="flex justify-end space-x-2 pt-4 border-t">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:space-x-2 pt-4 border-t">
             <Button
               type="button"
               variant="outline"
               onClick={handleCloseAddModal}
               disabled={isAddingTodo}
+              className="w-full sm:w-auto h-11 touch-manipulation"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isAddingTodo || !newTodo.trim()}
-              className="flex items-center space-x-2"
+              className="w-full sm:w-auto flex items-center justify-center space-x-2 h-11 touch-manipulation"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-5 w-5" />
               <span>{isAddingTodo ? "Adding..." : "Add Todo"}</span>
             </Button>
           </div>

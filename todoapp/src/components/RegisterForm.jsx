@@ -76,19 +76,19 @@ const RegisterForm = ({ onSwitchToLogin }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-6 sm:py-12 px-3 sm:px-4 lg:px-8">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Create account</CardTitle>
-          <CardDescription className="text-center">
+        <CardHeader className="space-y-1 px-4 sm:px-6">
+          <CardTitle className="text-xl sm:text-2xl font-bold text-center">Create account</CardTitle>
+          <CardDescription className="text-center text-sm">
             Enter your information to create a new account
           </CardDescription>
         </CardHeader>
         
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 px-4 sm:px-6">
             <div className="space-y-2">
-              <label htmlFor="username" className="text-sm font-medium">
+              <label htmlFor="username" className="text-sm font-medium block">
                 Username
               </label>
               <Input
@@ -107,7 +107,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">
+              <label htmlFor="email" className="text-sm font-medium block">
                 Email
               </label>
               <Input
@@ -126,7 +126,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium">
+              <label htmlFor="password" className="text-sm font-medium block">
                 Password
               </label>
               <Input
@@ -145,7 +145,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="text-sm font-medium">
+              <label htmlFor="confirmPassword" className="text-sm font-medium block">
                 Confirm Password
               </label>
               <Input
@@ -164,10 +164,10 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             </div>
           </CardContent>
 
-          <CardFooter className="flex flex-col space-y-4">
+          <CardFooter className="flex flex-col space-y-4 px-4 sm:px-6">
             <Button 
               type="submit" 
-              className="w-full"
+              className="w-full h-11 text-base"
               disabled={isLoading}
             >
               {isLoading ? 'Creating account...' : 'Create account'}
@@ -178,7 +178,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
               <button
                 type="button"
                 onClick={onSwitchToLogin}
-                className="text-blue-600 hover:text-blue-800 font-medium"
+                className="text-blue-600 hover:text-blue-800 font-medium touch-manipulation"
               >
                 Sign in
               </button>
