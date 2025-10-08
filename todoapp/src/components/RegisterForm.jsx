@@ -70,11 +70,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     setIsLoading(true);
     
     const { confirmPassword: _confirmPassword, ...registerData } = formData;
-    const result = await register(registerData);
-    
-    if (!result.success) {
-      setErrors({ general: result.message });
-    }
+    await register(registerData);
     
     setIsLoading(false);
   };
@@ -91,12 +87,6 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            {errors.general && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                {errors.general}
-              </div>
-            )}
-            
             <div className="space-y-2">
               <label htmlFor="username" className="text-sm font-medium">
                 Username

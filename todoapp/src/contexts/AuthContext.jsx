@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { authAPI } from '../services/api';
 
 const AuthContext = createContext();
@@ -29,15 +30,20 @@ const AuthProvider = ({ children }) => {
       if (response.success) {
         setUser(response.data.user);
         setIsAuthenticated(true);
+        toast.success('Login successful!');
         return { success: true, data: response.data };
       }
       
-      return { success: false, message: response.message };
+      const errorMessage = response.message || 'Login failed. Please try again.';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
     } catch (error) {
       console.error('Login error:', error);
+      const errorMessage = error.message || 'Login failed. Please try again.';
+      toast.error(errorMessage);
       return { 
         success: false, 
-        message: error.message || 'Login failed. Please try again.' 
+        message: errorMessage
       };
     } finally {
       setIsLoading(false);
@@ -52,15 +58,20 @@ const AuthProvider = ({ children }) => {
       if (response.success) {
         setUser(response.data.user);
         setIsAuthenticated(true);
+        toast.success('Registration successful!');
         return { success: true, data: response.data };
       }
       
-      return { success: false, message: response.message };
+      const errorMessage = response.message || 'Registration failed. Please try again.';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
     } catch (error) {
       console.error('Registration error:', error);
+      const errorMessage = error.message || 'Registration failed. Please try again.';
+      toast.error(errorMessage);
       return { 
         success: false, 
-        message: error.message || 'Registration failed. Please try again.' 
+        message: errorMessage
       };
     } finally {
       setIsLoading(false);
@@ -71,6 +82,7 @@ const AuthProvider = ({ children }) => {
     authAPI.logout();
     setUser(null);
     setIsAuthenticated(false);
+    toast.info('Logged out successfully');
   };
 
   const value = {

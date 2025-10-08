@@ -36,7 +36,25 @@ api.interceptors.response.use(
       localStorage.removeItem('user');
       window.location.href = '/login';
     }
-    return Promise.reject(error.response?.data || error);
+    
+    // Format error message
+    const errorData = error.response?.data;
+    if (errorData) {
+      // If API returns structured error
+      const errorMessage = errorData.message || 'An error occurred';
+      const errors = errorData.errors || [];
+      
+      return Promise.reject({
+        message: errorMessage,
+        errors: errors,
+        ...errorData
+      });
+    }
+    
+    return Promise.reject({
+      message: error.message || 'Network error',
+      errors: []
+    });
   }
 );
 

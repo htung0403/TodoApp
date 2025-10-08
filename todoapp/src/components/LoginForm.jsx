@@ -53,11 +53,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
     
     setIsLoading(true);
     
-    const result = await login(formData);
-    
-    if (!result.success) {
-      setErrors({ general: result.message });
-    }
+    await login(formData);
     
     setIsLoading(false);
   };
@@ -74,12 +70,6 @@ const LoginForm = ({ onSwitchToRegister }) => {
         
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            {errors.general && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                {errors.general}
-              </div>
-            )}
-            
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium">
                 Email

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { toast } from "react-toastify";
 import { useAuth } from "../hooks/useAuth";
 import { todoAPI } from "../services/api";
 import { Button } from "../components/ui/button";
@@ -50,11 +51,7 @@ const TodoApp = () => {
   const [todoToDelete, setTodoToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  useEffect(() => {
-    fetchTodos();
-  }, []);
-
-  const fetchTodos = async () => {
+  const fetchTodos = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await todoAPI.getTodos();
@@ -81,10 +78,15 @@ const TodoApp = () => {
       }
     } catch (error) {
       console.error("Failed to fetch todos:", error);
+      toast.error("Failed to load todos");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchTodos();
+  }, [fetchTodos]);
 
   const handleOpenAddModal = () => {
     setIsAddModalOpen(true);
@@ -113,9 +115,11 @@ const TodoApp = () => {
       if (response.success) {
         setTodos((prev) => [...prev, response.data]);
         handleCloseAddModal();
+        toast.success("Todo added successfully!");
       }
     } catch (error) {
       console.error("Failed to add todo:", error);
+      toast.error(error.message || "Failed to add todo");
     } finally {
       setIsAddingTodo(false);
     }
@@ -130,9 +134,12 @@ const TodoApp = () => {
             todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
           )
         );
+        const todo = todos.find(t => t.id === id);
+        toast.success(todo?.isCompleted ? "Todo marked as incomplete" : "Todo completed!");
       }
     } catch (error) {
       console.error("Failed to toggle todo:", error);
+      toast.error(error.message || "Failed to update todo");
     }
   };
 
@@ -153,9 +160,11 @@ const TodoApp = () => {
       if (response.success) {
         setTodos((prev) => prev.filter((todo) => todo.id !== todoToDelete.id));
         setTodoToDelete(null);
+        toast.success("Todo deleted successfully!");
       }
     } catch (error) {
       console.error("Failed to delete todo:", error);
+      toast.error(error.message || "Failed to delete todo");
     } finally {
       setIsDeleting(false);
     }
@@ -202,9 +211,11 @@ const TodoApp = () => {
           )
         );
         handleCancelEdit();
+        toast.success("Todo updated successfully!");
       }
     } catch (error) {
       console.error("Failed to update todo:", error);
+      toast.error(error.message || "Failed to update todo");
     }
   };
 

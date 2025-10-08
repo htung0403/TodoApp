@@ -32,7 +32,7 @@ builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
 // Configure JWT authentication
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "your-very-secure-secret-key-that-is-at-least-256-bits-long";
+var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is required. Please set Jwt:Key in appsettings.json");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "TodoApp";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "TodoApp";
 
@@ -96,8 +96,8 @@ else
 app.UseHttpsRedirection();
 
 // CORS - should be before authentication
-app.UseCors(policy => 
-    policy.WithOrigins("http://localhost:3000", "http://localhost:5173", "http://localhost:57419") // React/Vite dev servers
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:57419") // React/Vite dev servers
           .AllowAnyMethod()
           .AllowAnyHeader()
           .AllowCredentials());

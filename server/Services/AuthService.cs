@@ -22,7 +22,7 @@ namespace Server.Services
         {
             _userRepository = userRepository;
             _configuration = configuration;
-            
+
             // Load JWT settings from configuration
             _jwtSettings = new JwtSettings();
             _configuration.GetSection("Jwt").Bind(_jwtSettings);
@@ -35,19 +35,19 @@ namespace Server.Services
                 // Check if user already exists
                 if (await UserExistsAsync(registerDto.Email))
                 {
-                    return null;
+                    throw new InvalidOperationException("Email is already in use");
                 }
 
                 if (await UsernameExistsAsync(registerDto.Username))
                 {
-                    return null;
+                    throw new InvalidOperationException("Username is already in use");
                 }
 
                 // Validate password strength
                 var passwordValidation = PasswordHasher.ValidatePasswordStrength(registerDto.Password);
                 if (!passwordValidation.IsValid)
                 {
-                    return null;
+                    throw new InvalidOperationException($"Password validation failed: {string.Join(", ", passwordValidation.Errors)}");
                 }
 
                 // Hash the password
@@ -80,9 +80,14 @@ namespace Server.Services
                     }
                 };
             }
-            catch (Exception)
+            catch (InvalidOperationException)
             {
-                return null;
+                // Rethrow validation exceptions to be handled by controller
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Registration failed: {ex.Message}", ex);
             }
         }
 
@@ -95,13 +100,13 @@ namespace Server.Services
 
                 if (user == null)
                 {
-                    return null;
+                    throw new UnauthorizedAccessException("Invalid email or password");
                 }
 
                 // Verify password
                 if (!PasswordHasher.VerifyPassword(loginDto.Password, user.PasswordHash))
                 {
-                    return null;
+                    throw new UnauthorizedAccessException("Invalid email or password");
                 }
 
                 // Generate JWT token
@@ -121,13 +126,18 @@ namespace Server.Services
                     }
                 };
             }
-            catch (Exception)
+            catch (UnauthorizedAccessException)
             {
-                return null;
+                // Rethrow authentication exceptions to be handled by controller
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new UnauthorizedAccessException($"Login failed: {ex.Message}", ex);
             }
         }
 
-        public async Task<UserDto?> GetUserByIdAsync(int userId)
+        public async Task<UserDto> GetUserByIdAsync(int userId)
         {
             try
             {
@@ -135,7 +145,7 @@ namespace Server.Services
 
                 if (user == null)
                 {
-                    return null;
+                    throw new InvalidOperationException("User not found");
                 }
 
                 return new UserDto
@@ -148,7 +158,7 @@ namespace Server.Services
             }
             catch (Exception)
             {
-                return null;
+                throw new InvalidOperationException("Error retrieving user");
             }
         }
 
